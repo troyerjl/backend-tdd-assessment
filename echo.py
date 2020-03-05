@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """An enhanced version of the 'echo' cmd line utility"""
 
-__author__ = "???"
+__author__ = "troyerjl and knmarvel code as a resource"
 
 
 import sys
