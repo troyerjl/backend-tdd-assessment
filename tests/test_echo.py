@@ -2,22 +2,20 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import echo
+import subprocess
 
 
 # Your test case class goes here
 class TestEcho(unittest.TestCase):
     def test_help(self):
-    """ Running the program without arguments should show usage. """
-
+        """ Running the program without arguments should show usage. """
         # Run the command `python ./echo.py -h` in a separate process, then
         # collect it's output.
         process = subprocess.Popen(
-        ["python", "./echo.py", "-h"],
-        stdout=subprocess.PIPE)
+            ["python", "./echo.py", "-h"],
+            stdout=subprocess.PIPE)
         stdout, _ = process.communicate()
         usage = open("./USAGE", "r").read()
-
         self.assertEquals(stdout, usage)
 
     def test_uppper(self):
@@ -40,7 +38,7 @@ class TestEcho(unittest.TestCase):
         self.assertEqual("-u" in args_u, True)
         self.assertEquals(stdout_upper, usage)
         self.assertEqual("--upper" in args_upper, True)
-        
+
     def test_lower(self):
         process = subprocess.Popen(
             ["python", "./echo.py", "-l", "Hello"],
@@ -84,8 +82,29 @@ class TestEcho(unittest.TestCase):
         self.assertEqual("--title" in args_title, True)
 
     def test_select_all(self):
-        self.assertIsNotNone(main.select_all)
-        self.assertEqual(main.select_all(""))
+        process = subprocess.Popen(
+            ["python", "./echo.py", "-t", "-u", "-l", "hello"],
+            stdout=subprocess.PIPE)
+        stdout, _ = process.communicate()
+        stdout_t = stdout.decode("utf-8")
+        usage_t = open("./USAGETITLE", "r").read()
+        self.assertEquals(stdout_t, usage_t)
+
+        process = subprocess.Popen(
+            ["python", "./echo.py", "--title", "hello"],
+            stdout=subprocess.PIPE)
+        stdout, _ = process.communicate()
+        stdout_t = stdout.decode("utf-8")
+        usage_t = open("./USAGETITLE", "r").read()
+        self.assertEquals(stdout_t, usage_t)
+
+        process = subprocess.Popen(
+            ["python", "./echo.py", "--title", "hello"],
+            stdout=subprocess.PIPE)
+        stdout, _ = process.communicate()
+        stdout_t = stdout.decode("utf-8")
+        usage_t = open("./USAGETITLE", "r").read()
+        self.assertEquals(stdout_t, usage_t)
 
     def test_no_arguments(self):
         process = subprocess.Popen(
@@ -95,7 +114,6 @@ class TestEcho(unittest.TestCase):
         stdout = stdout.decode("utf-8")
         usage = open("./USAGENONE", "r").read()
         self.assertEquals(stdout, usage)
-
 
 
 if __name__ == '__main__':
